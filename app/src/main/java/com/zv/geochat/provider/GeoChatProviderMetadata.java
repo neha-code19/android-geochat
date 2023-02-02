@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
 
 public class GeoChatProviderMetadata {
 
+
 	public static final String AUTHORITY = "com.zv.geochat.provider.GeoChatProvider";
 	public static final String DATABASE_NAME = "geochat.db";
 	public static final int DATABASE_VERSION = 1;
@@ -27,5 +28,6 @@ public class GeoChatProviderMetadata {
 		// string type
 		public static final String USER_NAME = "user_name";
 		public static final String MSG_BODY = "msg_body";
+		public static final String CHAT_MESSAGE_DATE = "chat_message_date";
 	}
 }

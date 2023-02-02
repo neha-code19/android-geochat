@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.zv.geochat.model.ChatMessage;
 import com.zv.geochat.provider.GeoChatProviderMetadata.*;
 
@@ -76,6 +77,9 @@ public class ChatMessageStore {
 		int indexId = c.getColumnIndex(ChatMessageTableMetaData._ID);
 		int indexUserName = c.getColumnIndex(ChatMessageTableMetaData.USER_NAME);
 		int indexMsgBody = c.getColumnIndex(ChatMessageTableMetaData.MSG_BODY);
+		int indexMsgDate = c.getColumnIndex(ChatMessageTableMetaData.CHAT_MESSAGE_DATE);
+
+		Log.wtf("CursorValues", new Gson().toJson(c.getColumnNames()));
 
 		//walk through the rows based on indexes
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
@@ -83,11 +87,13 @@ public class ChatMessageStore {
 			chatMessage.setId(c.getString(indexId));
 			chatMessage.setUserName(c.getString(indexUserName));
 			chatMessage.setBody(c.getString(indexMsgBody));
+			chatMessage.setChatMsgDate(Long.parseLong(c.getString(indexMsgDate)));
 
 			list.add(chatMessage);
 
 			Log.v(TAG, "getChatMessageList -- found: " + chatMessage);
 		}
+		Log.wtf("ChatMessage", new Gson().toJson(list));
 		return list;
 	}
 
@@ -97,14 +103,15 @@ public class ChatMessageStore {
 		ContentValues cv = new ContentValues();
 		cv.put(ChatMessageTableMetaData.USER_NAME, chatMessage.getUserName());
 		cv.put(ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody());
+		cv.put(ChatMessageTableMetaData.CHAT_MESSAGE_DATE, chatMessage.getChatMsgDate());
 
 		Uri uri = ChatMessageTableMetaData.CONTENT_URI;
 		Log.v(TAG, "{db} insert uri: " + uri);
-		String where = ChatMessageTableMetaData._ID+ "=\'" + chatMessage.getId() + "\'";
+		String where = ChatMessageTableMetaData._ID + "=\'" + chatMessage.getId() + "\'";
 		int numRowsUpdated = contentResolver.update(uri, cv, where, null);
 		Log.v(TAG, "{db} updated rows count: " + numRowsUpdated);
 		if (numRowsUpdated == 0) {
-			Log.v(TAG, "{db} peer is not in db, need to insert new" );
+			Log.v(TAG, "{db} peer is not in db, need to insert new");
 			insert(chatMessage);
 		}
 	}
@@ -116,6 +123,7 @@ public class ChatMessageStore {
 		ContentValues cv = new ContentValues();
 		cv.put(GeoChatProviderMetadata.ChatMessageTableMetaData.USER_NAME, chatMessage.getUserName());
 		cv.put(GeoChatProviderMetadata.ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody());
+		cv.put(ChatMessageTableMetaData.CHAT_MESSAGE_DATE, chatMessage.getChatMsgDate());
 
 		Uri uri = GeoChatProviderMetadata.ChatMessageTableMetaData.CONTENT_URI;
 		Log.v(TAG, "{db} insert uri: " + uri);

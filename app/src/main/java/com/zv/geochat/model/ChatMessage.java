@@ -4,21 +4,31 @@ public class ChatMessage {
     private String id;
     private String userName;
     private String body;
+    private long chatMsgDate;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String userName, String body) {
+    public ChatMessage(String userName, String body, long msgDate) {
         this.userName = userName;
         this.body = body;
+        this.chatMsgDate = msgDate;
     }
 
     public ChatMessage(String id, String userName, String body) {
         this.id = id;
         this.userName = userName;
         this.body = body;
+
     }
 
+    public long getChatMsgDate() {
+        return chatMsgDate;
+    }
+
+    public void setChatMsgDate(long chatMsgDate) {
+        this.chatMsgDate = chatMsgDate;
+    }
 
     public String getUserName() {
         return userName;
@@ -50,6 +60,7 @@ public class ChatMessage {
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
                 ", body='" + body + '\'' +
+                ", chatMsgDate='" + chatMsgDate + '\'' +
                 '}';
     }
 }

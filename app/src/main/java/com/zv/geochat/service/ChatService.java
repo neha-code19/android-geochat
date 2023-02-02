@@ -104,12 +104,12 @@ public class ChatService extends Service {
         } else if (command == CMD_SEND_MESSAGE) {
             String messageText = (String) data.get(KEY_MESSAGE_TEXT);
             notificationDecorator.displaySimpleNotification("Sending message...", messageText);
-            chatMessageStore.insert(new ChatMessage(userName, messageText));
+            chatMessageStore.insert(new ChatMessage(userName, messageText, System.currentTimeMillis()));
         } else if (command == CMD_RECEIVE_MESSAGE) {
             String testUser = "Test User";
             String testMessage = "Simulated Message";
-            notificationDecorator.displaySimpleNotification("New message...: "+ testUser, testMessage);
-            chatMessageStore.insert(new ChatMessage(testUser, testMessage));
+            notificationDecorator.displaySimpleNotification("New message...: " + testUser, testMessage);
+            chatMessageStore.insert(new ChatMessage(testUser, testMessage, System.currentTimeMillis()));
         } else {
             Log.w(TAG, "Ignoring Unknown Command! id=" + command);
         }
